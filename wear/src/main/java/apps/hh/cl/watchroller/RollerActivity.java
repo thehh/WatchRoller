@@ -1,12 +1,14 @@
 package apps.hh.cl.watchroller;
 
 import android.os.Bundle;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.support.wear.widget.WearableLinearLayoutManager;
 import android.support.wear.widget.WearableRecyclerView;
 import android.support.wearable.activity.WearableActivity;
 
 import apps.hh.cl.watchroller.Adapter.DiceTypeAdapter;
 import apps.hh.cl.watchroller.Common.Commons;
+import apps.hh.cl.watchroller.TouchHelper.AddDiceTouchHelper;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -25,6 +27,7 @@ public class RollerActivity extends WearableActivity{
         unbinder = ButterKnife.bind(this);
 
         diceTypeAdapter = new DiceTypeAdapter(Commons.DICE_TYPES);
+        AddDiceTouchHelper addADice = new AddDiceTouchHelper(diceTypeAdapter);
 
         diceRecyclerView.setLayoutManager(new WearableLinearLayoutManager(RollerActivity.this));
         diceRecyclerView.setEdgeItemsCenteringEnabled(true);
@@ -32,6 +35,9 @@ public class RollerActivity extends WearableActivity{
         diceRecyclerView.setBezelFraction(0.5f);
         diceRecyclerView.setScrollDegreesPerScreen(90);
         diceRecyclerView.setAdapter(diceTypeAdapter);
+
+        ItemTouchHelper addADiceHelper = new ItemTouchHelper(addADice);
+        addADiceHelper.attachToRecyclerView(diceRecyclerView);
 
         // Enables Always-on
         setAmbientEnabled();

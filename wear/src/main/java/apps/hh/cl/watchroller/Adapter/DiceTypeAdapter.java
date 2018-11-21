@@ -1,32 +1,13 @@
 package apps.hh.cl.watchroller.Adapter;
 
-import android.graphics.Color;
-import android.os.Vibrator;
 import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
-import android.support.v7.widget.RecyclerView;
 import android.support.wear.widget.WearableRecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.DecelerateInterpolator;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import com.daimajia.androidanimations.library.Techniques;
-import com.daimajia.androidanimations.library.YoYo;
-
-import java.util.Random;
 
 import apps.hh.cl.watchroller.R;
 import apps.hh.cl.watchroller.ViewHolder.DiceViewHolder;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.OnLongClick;
-
-import static android.content.Context.VIBRATOR_SERVICE;
 
 public class DiceTypeAdapter extends WearableRecyclerView.Adapter<DiceViewHolder> {
     private int[] diceTypes;
@@ -48,7 +29,7 @@ public class DiceTypeAdapter extends WearableRecyclerView.Adapter<DiceViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull DiceViewHolder holder, int position) {
-        holder.diceType.setText(String.valueOf(diceTypes[position]));
+        holder.firstDice.setText(String.valueOf(diceTypes[position]));
         iconSelector(position, holder, parent);
     }
 
@@ -61,34 +42,38 @@ public class DiceTypeAdapter extends WearableRecyclerView.Adapter<DiceViewHolder
         switch (item){
             case 0:
                 holder.diceImage.setImageResource(R.drawable.d4);
-                holder.diceType.setTextColor(v.getContext().getResources().getColor(R.color.d4));
+                holder.firstDice.setTextColor(v.getContext().getResources().getColor(R.color.d4));
                 break;
             case 1:
                 holder.diceImage.setImageResource(R.drawable.d6);
-                holder.diceType.setTextColor(v.getContext().getResources().getColor(R.color.d6));
+                holder.firstDice.setTextColor(v.getContext().getResources().getColor(R.color.d6));
                 break;
             case 2:
                 holder.diceImage.setImageResource(R.drawable.d8);
-                holder.diceType.setTextColor(v.getContext().getResources().getColor(R.color.d8));
+                holder.firstDice.setTextColor(v.getContext().getResources().getColor(R.color.d8));
                 break;
             case 3:
                 holder.diceImage.setImageResource(R.drawable.d10);
-                holder.diceType.setTextColor(v.getContext().getResources().getColor(R.color.d10));
+                holder.firstDice.setTextColor(v.getContext().getResources().getColor(R.color.d10));
                 break;
             case 4:
                 holder.diceImage.setImageResource(R.drawable.d12);
-                holder.diceType.setTextColor(v.getContext().getResources().getColor(R.color.d12));
+                holder.firstDice.setTextColor(v.getContext().getResources().getColor(R.color.d12));
                 break;
             case 5:
                 holder.diceImage.setImageResource(R.drawable.d20);
-                holder.diceType.setTextColor(v.getContext().getResources().getColor(R.color.d20));
+                holder.firstDice.setTextColor(v.getContext().getResources().getColor(R.color.d20));
                 break;
             default:
                 holder.diceImage.setImageResource(R.drawable.d20);
-                holder.diceType.setTextColor(v.getContext().getResources().getColor(R.color.d20));
+                holder.firstDice.setTextColor(v.getContext().getResources().getColor(R.color.d20));
                 break;
 
         }
 
+    }
+
+    public DiceViewHolder getHolder() {
+        return holder;
     }
 }

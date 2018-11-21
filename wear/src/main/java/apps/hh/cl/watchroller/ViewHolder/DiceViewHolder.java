@@ -24,13 +24,17 @@ import butterknife.OnLongClick;
 
 import static android.content.Context.VIBRATOR_SERVICE;
 
-public class DiceViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener{
+public class DiceViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
     @BindView(R.id.die_layout)
     public ConstraintLayout layout;
     @BindView(R.id.iv_dice_icon)
     public ImageView diceImage;
     @BindView(R.id.tv_dice_name)
-    public TextView diceType;
+    public TextView firstDice;
+    @BindView(R.id.tv_dice_name_2)
+    public TextView secondDice;
+    @BindView(R.id.tv_dice_name_3)
+    public TextView thirdDice;
 
     public DiceViewHolder(View view) {
         super(view);
@@ -58,9 +62,13 @@ public class DiceViewHolder extends RecyclerView.ViewHolder implements View.OnCl
         YoYo.with(Techniques.RollIn)
                 .duration(1000)
                 .interpolate(new DecelerateInterpolator(3.0f))
-                .playOn(diceType);
-        diceType.setText(String.valueOf(diceRoll));
-        diceType.setTextColor(Color.parseColor("#03DAC6"));
+                .playOn(firstDice);
+        firstDice.setText(String.valueOf(diceRoll));
+        firstDice.setTextColor(Color.parseColor("#03DAC6"));
+        secondDice.setText(String.valueOf(diceRoll));
+        secondDice.setTextColor(Color.parseColor("#03DAC6"));
+        thirdDice.setText(String.valueOf(diceRoll));
+        thirdDice.setTextColor(Color.parseColor("#03DAC6"));
 
     }
 
@@ -68,14 +76,20 @@ public class DiceViewHolder extends RecyclerView.ViewHolder implements View.OnCl
     @OnLongClick
     public boolean onLongClick(View view) {
         int position = getLayoutPosition();
+        secondDice.setVisibility(View.GONE);
+        thirdDice.setVisibility(View.GONE);
         YoYo.with(Techniques.Landing)
                 .duration(700)
                 .playOn(diceImage);
         YoYo.with(Techniques.Landing)
                 .duration(700)
-                .playOn(diceType);
-        diceType.setText(String.valueOf(Commons.DICE_TYPES[position]));
-        diceType.setTextColor(view.getContext().getResources().getColor(resetIconColor(position)));
+                .playOn(firstDice);
+        firstDice.setText(String.valueOf(Commons.DICE_TYPES[position]));
+        secondDice.setText(String.valueOf(Commons.DICE_TYPES[position]));
+        thirdDice.setText(String.valueOf(Commons.DICE_TYPES[position]));
+        firstDice.setTextColor(view.getContext().getResources().getColor(resetIconColor(position)));
+        secondDice.setTextColor(view.getContext().getResources().getColor(resetIconColor(position)));
+        thirdDice.setTextColor(view.getContext().getResources().getColor(resetIconColor(position)));
 
         vibrate(view);
         return true;
@@ -127,5 +141,4 @@ public class DiceViewHolder extends RecyclerView.ViewHolder implements View.OnCl
         }
         return result;
     }
-
 }
