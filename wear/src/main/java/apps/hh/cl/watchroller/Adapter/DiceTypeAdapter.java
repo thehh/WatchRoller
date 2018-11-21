@@ -30,6 +30,7 @@ import static android.content.Context.VIBRATOR_SERVICE;
 public class DiceTypeAdapter extends WearableRecyclerView.Adapter<DiceTypeAdapter.DiceViewHolder> {
     private int[] diceTypes;
     private DiceViewHolder holder;
+    private ViewGroup parent;
 
 
     public DiceTypeAdapter(int[] diceTypes){
@@ -39,6 +40,7 @@ public class DiceTypeAdapter extends WearableRecyclerView.Adapter<DiceTypeAdapte
     @NonNull
     @Override
     public DiceViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        this.parent = parent;
         holder = new DiceViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.die_layout, parent, false));
         return holder;
     }
@@ -46,7 +48,7 @@ public class DiceTypeAdapter extends WearableRecyclerView.Adapter<DiceTypeAdapte
     @Override
     public void onBindViewHolder(@NonNull DiceViewHolder holder, int position) {
         holder.diceType.setText(String.valueOf(diceTypes[position]));
-        iconSelector(position, holder);
+        iconSelector(position, holder, parent);
     }
 
     @Override
@@ -54,38 +56,35 @@ public class DiceTypeAdapter extends WearableRecyclerView.Adapter<DiceTypeAdapte
         return diceTypes.length;
     }
 
-    private void iconSelector(int item, DiceViewHolder holder){
-        String[] diceColors = {
-                "#6161A7", "#F46600", "#607d8b", "#FFAA05", "#43a047", "#B14D4D"
-        };
+    private void iconSelector(int item, DiceViewHolder holder, View v){
         switch (item){
             case 0:
                 holder.diceImage.setImageResource(R.drawable.d4);
-                holder.diceType.setTextColor(Color.parseColor(diceColors[0]));
+                holder.diceType.setTextColor(v.getContext().getResources().getColor(R.color.d4));
                 break;
             case 1:
                 holder.diceImage.setImageResource(R.drawable.d6);
-                holder.diceType.setTextColor(Color.parseColor(diceColors[1]));
+                holder.diceType.setTextColor(v.getContext().getResources().getColor(R.color.d6));
                 break;
             case 2:
                 holder.diceImage.setImageResource(R.drawable.d8);
-                holder.diceType.setTextColor(Color.parseColor(diceColors[2]));
+                holder.diceType.setTextColor(v.getContext().getResources().getColor(R.color.d8));
                 break;
             case 3:
                 holder.diceImage.setImageResource(R.drawable.d10);
-                holder.diceType.setTextColor(Color.parseColor(diceColors[3]));
+                holder.diceType.setTextColor(v.getContext().getResources().getColor(R.color.d10));
                 break;
             case 4:
                 holder.diceImage.setImageResource(R.drawable.d12);
-                holder.diceType.setTextColor(Color.parseColor(diceColors[4]));
+                holder.diceType.setTextColor(v.getContext().getResources().getColor(R.color.d12));
                 break;
             case 5:
                 holder.diceImage.setImageResource(R.drawable.d20);
-                holder.diceType.setTextColor(Color.parseColor(diceColors[5]));
+                holder.diceType.setTextColor(v.getContext().getResources().getColor(R.color.d20));
                 break;
             default:
                 holder.diceImage.setImageResource(R.drawable.d20);
-                holder.diceType.setTextColor(Color.parseColor(diceColors[5]));
+                holder.diceType.setTextColor(v.getContext().getResources().getColor(R.color.d20));
                 break;
 
         }
@@ -143,19 +142,40 @@ public class DiceTypeAdapter extends WearableRecyclerView.Adapter<DiceTypeAdapte
                     .duration(700)
                     .playOn(diceType);
             diceType.setText(String.valueOf(diceTypes[position]));
-            diceType.setTextColor(Color.parseColor(resetIconColor(position)));
+            diceType.setTextColor(view.getContext().getResources().getColor(resetIconColor(position)));
 
             vibrate(view);
             return true;
         }
 
-        private String resetIconColor(int position){
-             String[] diceColors = {
-                    "#6161A7", "#F46600", "#607d8b", "#FFAA05", "#43a047", "#B14D4D"
-                };
+        private int resetIconColor(int position){
+            int returnedColor = 0;
+            switch (position){
+                case 0:
+                    returnedColor = R.color.d4;
+                    break;
+                case 1:
+                    returnedColor = R.color.d6;
+                    break;
+                case 2:
+                    returnedColor = R.color.d8;
+                    break;
+                case 3:
+                    returnedColor = R.color.d10;
+                    break;
+                case 4:
+                    returnedColor = R.color.d12;
+                    break;
+                case 5:
+                    returnedColor = R.color.d20;
+                    break;
+                default:
+                    returnedColor =R.color.d20;
+                    break;
 
-             return diceColors[position];
+            }
 
+            return returnedColor;
         }
 
         public void vibrate(View v){
