@@ -20,7 +20,6 @@ import com.daimajia.androidanimations.library.YoYo;
 import java.util.Random;
 
 import apps.hh.cl.watchroller.R;
-import apps.hh.cl.watchroller.ViewModel.DiceViewModel;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -30,13 +29,11 @@ import static android.content.Context.VIBRATOR_SERVICE;
 
 public class DiceTypeAdapter extends WearableRecyclerView.Adapter<DiceTypeAdapter.DiceViewHolder> {
     private int[] diceTypes;
-    private DiceViewModel returnedDice;
     private DiceViewHolder holder;
 
 
     public DiceTypeAdapter(int[] diceTypes){
         this.diceTypes = diceTypes;
-        this.returnedDice = new DiceViewModel();
     }
 
     @NonNull
@@ -55,11 +52,6 @@ public class DiceTypeAdapter extends WearableRecyclerView.Adapter<DiceTypeAdapte
     @Override
     public int getItemCount() {
         return diceTypes.length;
-    }
-
-    public DiceViewModel getRolledDice(){
-        returnedDice = holder.getRolledDice();
-        return returnedDice;
     }
 
     private void iconSelector(int item, DiceViewHolder holder){
@@ -108,12 +100,9 @@ public class DiceTypeAdapter extends WearableRecyclerView.Adapter<DiceTypeAdapte
         @BindView(R.id.tv_dice_name)
         public TextView diceType;
 
-        private DiceViewModel diceValue;
-
         private DiceViewHolder(View view) {
             super(view);
             view.setOnClickListener(this);
-            diceValue = new DiceViewModel();
             ButterKnife.bind(this, view);
         }
 
@@ -129,8 +118,6 @@ public class DiceTypeAdapter extends WearableRecyclerView.Adapter<DiceTypeAdapte
             int position = getLayoutPosition();
             int diceRoll = randomDiceValue(diceTypes[position]);
             Log.d("Dice Roll: ", String.valueOf(diceRoll));
-            diceValue.setDiceType(diceTypes[position]);
-            diceValue.setRolledValue(diceRoll);
 
             YoYo.with(Techniques.RollIn)
                     .duration(1000)
@@ -187,11 +174,6 @@ public class DiceTypeAdapter extends WearableRecyclerView.Adapter<DiceTypeAdapte
             }
             return result;
         }
-
-        public DiceViewModel getRolledDice(){
-            return diceValue;
-        }
-
 
     }
 }
