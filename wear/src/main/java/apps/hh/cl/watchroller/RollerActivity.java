@@ -6,6 +6,7 @@ import android.support.wear.widget.WearableRecyclerView;
 import android.support.wearable.activity.WearableActivity;
 
 import apps.hh.cl.watchroller.Adapter.DiceTypeAdapter;
+import apps.hh.cl.watchroller.Common.Commons;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -15,8 +16,6 @@ public class RollerActivity extends WearableActivity{
     public WearableRecyclerView diceRecyclerView;
     private DiceTypeAdapter diceTypeAdapter;
 
-    private int[] diceTypes = {4,6,8,10,12,20};
-
     public Unbinder unbinder;
 
     @Override
@@ -25,7 +24,7 @@ public class RollerActivity extends WearableActivity{
         setContentView(R.layout.activity_roller);
         unbinder = ButterKnife.bind(this);
 
-        diceTypeAdapter = new DiceTypeAdapter(diceTypes);
+        diceTypeAdapter = new DiceTypeAdapter(Commons.DICE_TYPES);
 
         diceRecyclerView.setLayoutManager(new WearableLinearLayoutManager(RollerActivity.this));
         diceRecyclerView.setEdgeItemsCenteringEnabled(true);
