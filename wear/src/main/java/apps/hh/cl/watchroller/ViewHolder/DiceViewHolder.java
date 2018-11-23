@@ -33,8 +33,6 @@ public class DiceViewHolder extends RecyclerView.ViewHolder implements View.OnCl
     public TextView firstDice;
     @BindView(R.id.tv_dice_name_2)
     public TextView secondDice;
-    @BindView(R.id.tv_dice_name_3)
-    public TextView thirdDice;
 
     private int swipeCount = 0;
 
@@ -69,17 +67,21 @@ public class DiceViewHolder extends RecyclerView.ViewHolder implements View.OnCl
         firstDice.setTextColor(Color.parseColor("#03DAC6"));
         secondDice.setText(String.valueOf(diceRoll));
         secondDice.setTextColor(Color.parseColor("#03DAC6"));
-        thirdDice.setText(String.valueOf(diceRoll));
-        thirdDice.setTextColor(Color.parseColor("#03DAC6"));
 
     }
 
     @Override
     @OnLongClick
     public boolean onLongClick(View view) {
+        resetDices(view);
+        vibrate(view);
+        return true;
+    }
+
+    private void resetDices(View view){
         int position = getLayoutPosition();
+        swipeCount = 0;
         secondDice.setVisibility(View.GONE);
-        thirdDice.setVisibility(View.GONE);
         YoYo.with(Techniques.Landing)
                 .duration(700)
                 .playOn(diceImage);
@@ -88,13 +90,9 @@ public class DiceViewHolder extends RecyclerView.ViewHolder implements View.OnCl
                 .playOn(firstDice);
         firstDice.setText(String.valueOf(Commons.DICE_TYPES[position]));
         secondDice.setText(String.valueOf(Commons.DICE_TYPES[position]));
-        thirdDice.setText(String.valueOf(Commons.DICE_TYPES[position]));
         firstDice.setTextColor(view.getContext().getResources().getColor(resetIconColor(position)));
         secondDice.setTextColor(view.getContext().getResources().getColor(resetIconColor(position)));
-        thirdDice.setTextColor(view.getContext().getResources().getColor(resetIconColor(position)));
 
-        vibrate(view);
-        return true;
     }
 
     private int resetIconColor(int position){
@@ -154,11 +152,11 @@ public class DiceViewHolder extends RecyclerView.ViewHolder implements View.OnCl
 
     public String setManyDices(int howManyDices){
         String diceLabels = "";
-        if(howManyDices != 2){
+        if(howManyDices > 2){
             diceLabels = setupLabel(getLayoutPosition());
         }
-
-        return howManyDices+diceLabels;
+        String diceHint = howManyDices + diceLabels;
+        return diceHint;
     }
 
     private String setupLabel(int position){
@@ -191,21 +189,16 @@ public class DiceViewHolder extends RecyclerView.ViewHolder implements View.OnCl
     }
 
     public void setupDices(int swipeCount){
-        if(swipeCount == 0){
+        if(swipeCount == 0){ //1 dado
             secondDice.setVisibility(View.GONE);
-            thirdDice.setVisibility(View.GONE);
         }
-        else if(swipeCount == 1){
+        else if(swipeCount == 1){ //2 dados
             secondDice.setVisibility(View.VISIBLE);
         }
-        else if(swipeCount == 3){
+        else{ //n dados
+            String dicesText = setManyDices(swipeCount);
+            firstDice.setText(dicesText);
             secondDice.setVisibility(View.VISIBLE);
-            thirdDice.setVisibility(View.VISIBLE);
-        }
-        else{
-            secondDice.setVisibility(View.VISIBLE);
-            thirdDice.setVisibility(View.GONE);
-            firstDice.setText(setManyDices(swipeCount));
         }
     }
 }
