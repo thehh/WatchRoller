@@ -36,6 +36,8 @@ public class DiceViewHolder extends RecyclerView.ViewHolder implements View.OnCl
     @BindView(R.id.tv_dice_name_3)
     public TextView thirdDice;
 
+    private int swipeCount = 0;
+
     public DiceViewHolder(View view) {
         super(view);
         view.setOnClickListener(this);
@@ -140,5 +142,70 @@ public class DiceViewHolder extends RecyclerView.ViewHolder implements View.OnCl
             result = rnd.nextInt(diceType + 1);
         }
         return result;
+    }
+
+    public int getSwipeCount(){
+        return this.swipeCount;
+    }
+
+    public void setSwipeCount(int swipes){
+        this.swipeCount = swipes;
+    }
+
+    public String setManyDices(int howManyDices){
+        String diceLabels = "";
+        if(howManyDices != 2){
+            diceLabels = setupLabel(getLayoutPosition());
+        }
+
+        return howManyDices+diceLabels;
+    }
+
+    private String setupLabel(int position){
+        String diceLabel = "";
+        switch (position){
+            case 0:
+                diceLabel = "d4";
+                break;
+            case 1:
+                diceLabel = "d6";
+                break;
+            case 2:
+                diceLabel = "d8";
+                break;
+            case 3:
+                diceLabel = "d10";
+                break;
+            case 4:
+                diceLabel = "d12";
+                break;
+            case 5:
+                diceLabel = "d20";
+                break;
+            default:
+                diceLabel = "d20";
+                break;
+
+        }
+        return diceLabel;
+    }
+
+    public void setupDices(int swipeCount){
+        if(swipeCount == 0){
+            secondDice.setVisibility(View.GONE);
+            thirdDice.setVisibility(View.GONE);
+        }
+        else if(swipeCount == 1){
+            secondDice.setVisibility(View.VISIBLE);
+        }
+        else if(swipeCount == 3){
+            secondDice.setVisibility(View.VISIBLE);
+            thirdDice.setVisibility(View.VISIBLE);
+        }
+        else{
+            secondDice.setVisibility(View.VISIBLE);
+            thirdDice.setVisibility(View.GONE);
+            firstDice.setText(setManyDices(swipeCount));
+        }
     }
 }
