@@ -2,11 +2,16 @@ package apps.hh.cl.watchroller.adapter;
 
 import android.support.annotation.NonNull;
 import android.support.wear.widget.WearableRecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import apps.hh.cl.watchroller.R;
+import apps.hh.cl.watchroller.data.DiceRow;
 import apps.hh.cl.watchroller.viewholder.DiceViewHolder;
 
 public class DiceTypeAdapter extends WearableRecyclerView.Adapter<DiceViewHolder> {
@@ -14,9 +19,14 @@ public class DiceTypeAdapter extends WearableRecyclerView.Adapter<DiceViewHolder
     private DiceViewHolder holder;
     private ViewGroup parent;
 
+    private List<DiceRow> dices;
 
     public DiceTypeAdapter(int[] diceTypes){
         this.diceTypes = diceTypes;
+        this.dices = new ArrayList<>();
+        for(int dice: diceTypes){
+            this.dices.add(new DiceRow(dice, 0));
+        }
     }
 
     @NonNull
@@ -28,9 +38,15 @@ public class DiceTypeAdapter extends WearableRecyclerView.Adapter<DiceViewHolder
     }
 
     @Override
+    public void onViewAttachedToWindow(DiceViewHolder vh){
+        super.onViewAttachedToWindow(vh);
+        Log.d("Adapter", String.valueOf(this.dices.get(vh.getAdapterPosition()).getDiceType()));
+        vh.firstDice.setText(String.valueOf(this.dices.get(vh.getAdapterPosition()).getDiceType()));
+    }
+
+    @Override
     public void onBindViewHolder(@NonNull DiceViewHolder holder, int position) {
-        holder.firstDice.setText(String.valueOf(diceTypes[position]));
-        //holder.setupDices(holder.getSwipeCount());
+        holder.setupDices(this.dices.get(holder.getAdapterPosition()).getDiceRolls());
         iconSelector(position, holder, parent);
     }
 
@@ -76,5 +92,9 @@ public class DiceTypeAdapter extends WearableRecyclerView.Adapter<DiceViewHolder
 
     public DiceViewHolder getHolder() {
         return holder;
+    }
+
+    public List<DiceRow> getDices(){
+        return dices;
     }
 }
