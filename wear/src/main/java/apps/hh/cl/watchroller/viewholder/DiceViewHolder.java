@@ -1,4 +1,4 @@
-package apps.hh.cl.watchroller.ViewHolder;
+package apps.hh.cl.watchroller.viewholder;
 
 import android.graphics.Color;
 import android.os.Vibrator;
@@ -15,7 +15,7 @@ import com.daimajia.androidanimations.library.YoYo;
 
 import java.util.Random;
 
-import apps.hh.cl.watchroller.Common.Utils;
+import apps.hh.cl.watchroller.common.Utils;
 import apps.hh.cl.watchroller.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -69,11 +69,11 @@ public class DiceViewHolder extends RecyclerView.ViewHolder implements View.OnCl
 
     private void rollADice(int position){
         YoYo.with(Techniques.RollIn)
-                .duration(1000)
+                .duration(Utils.ANIMATION_SPEED)
                 .interpolate(new DecelerateInterpolator(3.0f))
                 .playOn(diceImage);
         YoYo.with(Techniques.RollIn)
-                .duration(1000)
+                .duration(Utils.ANIMATION_SPEED)
                 .interpolate(new DecelerateInterpolator(3.0f))
                 .playOn(firstDice);
         int firstDiceRoll = randomDiceValue(Utils.DICE_TYPES[position]);
@@ -83,15 +83,15 @@ public class DiceViewHolder extends RecyclerView.ViewHolder implements View.OnCl
 
     private void rollWithAdvantage(int position){
         YoYo.with(Techniques.RollIn)
-                .duration(1000)
+                .duration(Utils.ANIMATION_SPEED)
                 .interpolate(new DecelerateInterpolator(3.0f))
                 .playOn(diceImage);
         YoYo.with(Techniques.RollIn)
-                .duration(1000)
+                .duration(Utils.ANIMATION_SPEED)
                 .interpolate(new DecelerateInterpolator(3.0f))
                 .playOn(firstDice);
         YoYo.with(Techniques.RollIn)
-                .duration(1000)
+                .duration(Utils.ANIMATION_SPEED)
                 .interpolate(new DecelerateInterpolator(3.0f))
                 .playOn(secondDice);
         if(!firstDice.getText().toString().contains("d")){
@@ -107,15 +107,15 @@ public class DiceViewHolder extends RecyclerView.ViewHolder implements View.OnCl
 
     private void rollNDices(int position){
         YoYo.with(Techniques.RollIn)
-                .duration(1000)
+                .duration(Utils.ANIMATION_SPEED)
                 .interpolate(new DecelerateInterpolator(3.0f))
                 .playOn(diceImage);
         YoYo.with(Techniques.RollIn)
-                .duration(1000)
+                .duration(Utils.ANIMATION_SPEED)
                 .interpolate(new DecelerateInterpolator(3.0f))
                 .playOn(firstDice);
         YoYo.with(Techniques.RollIn)
-                .duration(1000)
+                .duration(Utils.ANIMATION_SPEED)
                 .interpolate(new DecelerateInterpolator(3.0f))
                 .playOn(secondDice);
         secondDice.setText(String.valueOf(returnDiceSum(Utils.DICE_TYPES[position])));
@@ -135,10 +135,10 @@ public class DiceViewHolder extends RecyclerView.ViewHolder implements View.OnCl
         swipeCount = 0;
         secondDice.setVisibility(View.GONE);
         YoYo.with(Techniques.Landing)
-                .duration(700)
+                .duration(Utils.ANIMATION_SPEED)
                 .playOn(diceImage);
         YoYo.with(Techniques.Landing)
-                .duration(700)
+                .duration(Utils.ANIMATION_SPEED)
                 .playOn(firstDice);
         firstDice.setText(String.valueOf(Utils.DICE_TYPES[position]));
         firstDice.setTextColor(view.getContext().getResources().getColor(resetIconColor(position)));

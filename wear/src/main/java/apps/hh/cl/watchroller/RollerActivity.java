@@ -8,9 +8,9 @@ import android.support.wear.widget.WearableLinearLayoutManager;
 import android.support.wear.widget.WearableRecyclerView;
 import android.support.wearable.activity.WearableActivity;
 
-import apps.hh.cl.watchroller.Adapter.DiceTypeAdapter;
-import apps.hh.cl.watchroller.Common.Utils;
-import apps.hh.cl.watchroller.TouchHelper.AddDiceTouchHelper;
+import apps.hh.cl.watchroller.adapter.DiceTypeAdapter;
+import apps.hh.cl.watchroller.common.Utils;
+import apps.hh.cl.watchroller.touchhelper.AddDiceTouchHelper;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;

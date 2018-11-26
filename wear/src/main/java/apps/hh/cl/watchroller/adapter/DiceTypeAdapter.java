@@ -1,4 +1,4 @@
-package apps.hh.cl.watchroller.Adapter;
+package apps.hh.cl.watchroller.adapter;
 
 import android.support.annotation.NonNull;
 import android.support.wear.widget.WearableRecyclerView;
@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import apps.hh.cl.watchroller.R;
-import apps.hh.cl.watchroller.ViewHolder.DiceViewHolder;
+import apps.hh.cl.watchroller.viewholder.DiceViewHolder;
 
 public class DiceTypeAdapter extends WearableRecyclerView.Adapter<DiceViewHolder> {
     private int[] diceTypes;

@@ -1,11 +1,11 @@
-package apps.hh.cl.watchroller.TouchHelper;
+package apps.hh.cl.watchroller.touchhelper;
 
 import android.graphics.Canvas;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 
-import apps.hh.cl.watchroller.Adapter.DiceTypeAdapter;
-import apps.hh.cl.watchroller.ViewHolder.DiceViewHolder;
+import apps.hh.cl.watchroller.adapter.DiceTypeAdapter;
+import apps.hh.cl.watchroller.viewholder.DiceViewHolder;
 
 public class AddDiceTouchHelper extends ItemTouchHelper.SimpleCallback{
     private DiceTypeAdapter diceAdapter;
