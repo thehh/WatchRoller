@@ -15,7 +15,7 @@ import com.daimajia.androidanimations.library.YoYo;
 
 import java.util.Random;
 
-import apps.hh.cl.watchroller.Common.Commons;
+import apps.hh.cl.watchroller.Common.Utils;
 import apps.hh.cl.watchroller.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -51,10 +51,23 @@ public class DiceViewHolder extends RecyclerView.ViewHolder implements View.OnCl
     @Override
     @OnClick
     public void onClick(View view) {
-        int position = getLayoutPosition();
-        int diceRoll = randomDiceValue(Commons.DICE_TYPES[position]);
-        Log.d("Dice Roll: ", String.valueOf(diceRoll));
+        int position = getAdapterPosition();
 
+        switch(rollThisManyDices()){
+            case 1:
+                rollADice(position);
+                break;
+            case 2:
+                rollWithAdvantage(position);
+                break;
+            default:
+                rollNDices(position);
+                break;
+        }
+
+    }
+
+    private void rollADice(int position){
         YoYo.with(Techniques.RollIn)
                 .duration(1000)
                 .interpolate(new DecelerateInterpolator(3.0f))
@@ -63,11 +76,50 @@ public class DiceViewHolder extends RecyclerView.ViewHolder implements View.OnCl
                 .duration(1000)
                 .interpolate(new DecelerateInterpolator(3.0f))
                 .playOn(firstDice);
-        firstDice.setText(String.valueOf(diceRoll));
+        int firstDiceRoll = randomDiceValue(Utils.DICE_TYPES[position]);
+        firstDice.setText(String.valueOf(firstDiceRoll));
         firstDice.setTextColor(Color.parseColor("#03DAC6"));
-        secondDice.setText(String.valueOf(diceRoll));
-        secondDice.setTextColor(Color.parseColor("#03DAC6"));
+    }
 
+    private void rollWithAdvantage(int position){
+        YoYo.with(Techniques.RollIn)
+                .duration(1000)
+                .interpolate(new DecelerateInterpolator(3.0f))
+                .playOn(diceImage);
+        YoYo.with(Techniques.RollIn)
+                .duration(1000)
+                .interpolate(new DecelerateInterpolator(3.0f))
+                .playOn(firstDice);
+        YoYo.with(Techniques.RollIn)
+                .duration(1000)
+                .interpolate(new DecelerateInterpolator(3.0f))
+                .playOn(secondDice);
+        if(!firstDice.getText().toString().contains("d")){
+            int firstDiceRoll = randomDiceValue(Utils.DICE_TYPES[position]);
+            int secondDiceRoll = randomDiceValue(Utils.DICE_TYPES[position]);
+            Log.d("DICES", "first: " + firstDiceRoll + "\n second: " + secondDiceRoll);
+            firstDice.setText(String.valueOf(firstDiceRoll));
+            secondDice.setText(String.valueOf(secondDiceRoll));
+            firstDice.setTextColor(Color.parseColor("#03DAC6"));
+            secondDice.setTextColor(Color.parseColor("#03DAC6"));
+        }
+    }
+
+    private void rollNDices(int position){
+        YoYo.with(Techniques.RollIn)
+                .duration(1000)
+                .interpolate(new DecelerateInterpolator(3.0f))
+                .playOn(diceImage);
+        YoYo.with(Techniques.RollIn)
+                .duration(1000)
+                .interpolate(new DecelerateInterpolator(3.0f))
+                .playOn(firstDice);
+        YoYo.with(Techniques.RollIn)
+                .duration(1000)
+                .interpolate(new DecelerateInterpolator(3.0f))
+                .playOn(secondDice);
+        secondDice.setText(String.valueOf(returnDiceSum(Utils.DICE_TYPES[position])));
+        secondDice.setTextColor(Color.parseColor("#03DAC6"));
     }
 
     @Override
@@ -79,7 +131,7 @@ public class DiceViewHolder extends RecyclerView.ViewHolder implements View.OnCl
     }
 
     private void resetDices(View view){
-        int position = getLayoutPosition();
+        int position = getAdapterPosition();
         swipeCount = 0;
         secondDice.setVisibility(View.GONE);
         YoYo.with(Techniques.Landing)
@@ -88,10 +140,8 @@ public class DiceViewHolder extends RecyclerView.ViewHolder implements View.OnCl
         YoYo.with(Techniques.Landing)
                 .duration(700)
                 .playOn(firstDice);
-        firstDice.setText(String.valueOf(Commons.DICE_TYPES[position]));
-        secondDice.setText(String.valueOf(Commons.DICE_TYPES[position]));
+        firstDice.setText(String.valueOf(Utils.DICE_TYPES[position]));
         firstDice.setTextColor(view.getContext().getResources().getColor(resetIconColor(position)));
-        secondDice.setTextColor(view.getContext().getResources().getColor(resetIconColor(position)));
 
     }
 
@@ -125,7 +175,7 @@ public class DiceViewHolder extends RecyclerView.ViewHolder implements View.OnCl
         return returnedColor;
     }
 
-    public void vibrate(View v){
+    private void vibrate(View v){
         Vibrator vibrator = (Vibrator) v.getContext().getSystemService(VIBRATOR_SERVICE);
         long[] vibrationPattern = {0, 500, 50, 300};
         //-1 - don't repeat
@@ -134,7 +184,7 @@ public class DiceViewHolder extends RecyclerView.ViewHolder implements View.OnCl
     }
 
     private int randomDiceValue(int diceType){
-        Random rnd = new Random(System.currentTimeMillis());
+        Random rnd = new Random();
         int result = 0;
         while(result == 0){
             result = rnd.nextInt(diceType + 1);
@@ -150,7 +200,7 @@ public class DiceViewHolder extends RecyclerView.ViewHolder implements View.OnCl
         this.swipeCount = swipes;
     }
 
-    public String setManyDices(int howManyDices){
+    private String setManyDices(int howManyDices){
         String diceLabels = "";
         if(howManyDices > 2){
             diceLabels = setupLabel(getLayoutPosition());
@@ -200,5 +250,26 @@ public class DiceViewHolder extends RecyclerView.ViewHolder implements View.OnCl
             firstDice.setText(dicesText);
             secondDice.setVisibility(View.VISIBLE);
         }
+    }
+
+    private int rollThisManyDices(){
+        int rollthese = 0;
+        if(firstDice.getVisibility() == View.VISIBLE && !firstDice.getText().toString().contains("d"))
+            rollthese++;
+        if(secondDice.getVisibility() == View.VISIBLE && !firstDice.getText().toString().contains("d"))
+            rollthese++;
+        if(firstDice.getVisibility() == View.VISIBLE && firstDice.getText().toString().contains("d")){
+            String rolling = firstDice.getText().toString().split("d")[0];
+            rollthese = Integer.parseInt(rolling);
+        }
+        return rollthese;
+    }
+
+    private int returnDiceSum(int diceType){
+        int sum = 0;
+        for(int i = 0; i< rollThisManyDices(); i++){
+            sum += randomDiceValue(diceType);
+        }
+        return sum;
     }
 }

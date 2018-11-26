@@ -30,6 +30,7 @@ public class DiceTypeAdapter extends WearableRecyclerView.Adapter<DiceViewHolder
     @Override
     public void onBindViewHolder(@NonNull DiceViewHolder holder, int position) {
         holder.firstDice.setText(String.valueOf(diceTypes[position]));
+        //holder.setupDices(holder.getSwipeCount());
         iconSelector(position, holder, parent);
     }
 

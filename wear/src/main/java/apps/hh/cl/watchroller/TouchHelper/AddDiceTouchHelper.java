@@ -10,7 +10,7 @@ import apps.hh.cl.watchroller.ViewHolder.DiceViewHolder;
 public class AddDiceTouchHelper extends ItemTouchHelper.SimpleCallback{
     private DiceTypeAdapter diceAdapter;
     private float previousDx = 0;
-    private int swipeCount = 0;
+    private int thisDiceSwipeCount = 0;
     private float sensitivity = 100f;
 
     public AddDiceTouchHelper(DiceTypeAdapter diceAdapter){
@@ -26,14 +26,15 @@ public class AddDiceTouchHelper extends ItemTouchHelper.SimpleCallback{
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
         previousDx = 0;
+        //thisDiceSwipeCount = ((DiceViewHolder) viewHolder).getSwipeCount();
         if(direction == ItemTouchHelper.START){ //<-
-            ((DiceViewHolder) viewHolder).setSwipeCount(swipeCount--);
-            swipeCount = swipeCount > 0 ? swipeCount : 0;
-            ((DiceViewHolder) viewHolder).setupDices(swipeCount);
+            ((DiceViewHolder) viewHolder).setSwipeCount(thisDiceSwipeCount--);
+            thisDiceSwipeCount = thisDiceSwipeCount > 0 ? thisDiceSwipeCount : 0;
+            ((DiceViewHolder) viewHolder).setupDices(thisDiceSwipeCount);
         }
         else if(direction == ItemTouchHelper.END){ //->
-            ((DiceViewHolder) viewHolder).setSwipeCount(swipeCount++);
-            ((DiceViewHolder) viewHolder).setupDices(swipeCount);
+            ((DiceViewHolder) viewHolder).setSwipeCount(thisDiceSwipeCount++);
+            ((DiceViewHolder) viewHolder).setupDices(thisDiceSwipeCount);
         }
         this.diceAdapter.notifyDataSetChanged();
     }
